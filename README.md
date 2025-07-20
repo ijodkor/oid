@@ -18,7 +18,7 @@ ONE_ID_CLIENT_ID=<client_id>
 ONE_ID_CLIENT_SECRET=<client_secret>
 ```
 
-Ixtiyoriy (Optional)
+Ixtiyoriy (Optional) .env
 
 ```dotenv
 ONE_ID_REDIRECT_URL=<redirect_url>
