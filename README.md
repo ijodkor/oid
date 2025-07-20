@@ -4,12 +4,13 @@
 
 - Go ^v1.24
 - Gin ^v1.10
+- Go DotEnv
 
 ## 2. Sozlash (Setup)
 
 Muhit o&#8216;zgaruvchilari o&#8216;rnatilinadi (Set environment variables)
 
-Majburiy (Mandatory)
+Majburiy (Mandatory) .env
 
 ```dotenv
 ONE_ID_SSO_URL=<one_id_sso_url>
