@@ -54,7 +54,7 @@ func Register(
 // handler.go
 
 type Handler struct {
-	oneSrv *oid.Service
+	oneSrv oid.IService
 }
 
 func (h *Handler) Access(c *gin.Context) {
@@ -77,7 +77,7 @@ func (h *Handler) Access(c *gin.Context) {
 	})
 }
 
-func CrtHandler(oneSrv *oid.Service) *Handler {
+func CrtHandler(oneSrv oid.IService) *Handler {
 	return &Handler{
 		oneSrv: oneSrv,
 	}
@@ -105,4 +105,16 @@ _ = container.Provide(oneid.GetController)
 
 ```
 
+## Mavjud imkoniyatlar (Available features)
+
+| Nomi (name) |                      Izoh (description)                      |
+|:------------|:------------------------------------------------------------:|
+| GetUrl      |           OneIDga o&#8216;tish uchun manzil olish            |
+| GetToken    |                    Ruxsat tokenini olish                     |
+| GetIdentity |  Token orqali foydalanuvchining ma&#8217;lumotlarini olish   |
+| Logout      | Token yoki sess_id orqali foydalanuvchini OneIDdan chiqarish |
+
 ### Foydalanilgan manbalar (References)
+
+- [OAuth2 scope](https://oauth.net/2/scope/)
+- [Qo&#8216;llanma (Instruction)](https://id.egov.uz/uz/help)

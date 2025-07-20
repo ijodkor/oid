@@ -8,7 +8,7 @@ import (
 )
 
 type Handler struct {
-	oneSrv *oid.Service
+	oneSrv oid.IService
 }
 
 func (h *Handler) Access(c *gin.Context) {
@@ -31,7 +31,7 @@ func (h *Handler) Access(c *gin.Context) {
 	})
 }
 
-func CrtHandler(oneSrv *oid.Service) *Handler {
+func CrtHandler(oneSrv oid.IService) *Handler {
 	return &Handler{
 		oneSrv: oneSrv,
 	}

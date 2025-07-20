@@ -7,25 +7,24 @@ import (
 )
 
 type Handler struct {
-	srv *Service
+	srv IService
 }
 
 var Controller *Handler
 
 func (h Handler) GetUrl(c *gin.Context) {
-	r := validation.ValidatedQuery[OneIdUrlRequest](c)
-	if r == nil {
+	//state, _ := c.GetQuery("state")
+	query := validation.ValidatedQuery[OneIdUrlRequest](c)
+	if query == nil {
 		return
 	}
 
-	state, _ := c.GetQuery("state")
-
 	response.Success(c, gin.H{
-		"url": h.srv.GetUrl(nil, state),
+		"url": h.srv.GetUrl(query.Scope, query.State),
 	})
 }
 
-func crtController(srv *Service) *Handler {
+func crtController(srv IService) *Handler {
 	Controller = &Handler{
 		srv: srv,
 	}

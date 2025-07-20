@@ -18,5 +18,6 @@ type OneIdToken struct {
 }
 
 type OneIdUrlRequest struct {
-	State string `json:"state" form:"state" g:"required"`
+	State string  `json:"state" form:"state" g:"required"`
+	Scope *string `json:"scope" form:"scope"`
 }

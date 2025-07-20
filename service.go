@@ -10,16 +10,23 @@ import (
 	"sync"
 )
 
-type Service struct {
+type IService interface {
+	GetUrl(scope *string, state string) string
+	GetToken(dto TokenDto) (OneIdToken, error)
+	GetIdentity(dto OneIdIdentityRequest) *Identity
+	Logout(dto OneIdIdentityRequest) bool
+}
+
+type service struct {
 	conf *Config
 }
 
 var (
 	sOnce       sync.Once
-	srvInstance *Service
+	srvInstance IService
 )
 
-func (s *Service) GetUrl(scope *string, state string) string {
+func (s *service) GetUrl(scope *string, state string) string {
 	if scope == nil {
 		sc := OneScope
 		scope = &sc
@@ -35,7 +42,7 @@ func (s *Service) GetUrl(scope *string, state string) string {
 	return fmt.Sprintf("%s?%s", s.conf.Url, params.Encode())
 }
 
-func (s *Service) GetToken(dto TokenDto) (OneIdToken, error) {
+func (s *service) GetToken(dto TokenDto) (OneIdToken, error) {
 	payload := url.Values{}
 	payload.Set("grant_type", GrandTypeToken)
 	payload.Set("client_id", s.conf.ClientId)
@@ -67,7 +74,7 @@ func (s *Service) GetToken(dto TokenDto) (OneIdToken, error) {
 	return token, err
 }
 
-func (s *Service) GetIdentity(dto OneIdIdentityRequest) *Identity {
+func (s *service) GetIdentity(dto OneIdIdentityRequest) *Identity {
 	token, err := s.GetToken(TokenDto{
 		RedirectUri: *s.conf.RedirectUrl,
 		Code:        dto.Code,
@@ -109,7 +116,7 @@ func (s *Service) GetIdentity(dto OneIdIdentityRequest) *Identity {
 	return &identity
 }
 
-func (s *Service) Logout(dto OneIdIdentityRequest) bool {
+func (s *service) Logout(dto OneIdIdentityRequest) bool {
 	token, err := s.GetToken(TokenDto{
 		RedirectUri: *s.conf.RedirectUrl,
 		Code:        dto.Code,
@@ -143,9 +150,9 @@ func (s *Service) Logout(dto OneIdIdentityRequest) bool {
 	return true
 }
 
-func CrtOneIdService(conf *Config) *Service {
+func CrtOneIdService(conf *Config) IService {
 	sOnce.Do(func() {
-		srvInstance = &Service{
+		srvInstance = &service{
 			conf: conf,
 		}
 	})
@@ -153,6 +160,6 @@ func CrtOneIdService(conf *Config) *Service {
 	return srvInstance
 }
 
-func GetService() *Service {
+func GetService() IService {
 	return srvInstance
 }
