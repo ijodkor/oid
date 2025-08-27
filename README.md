@@ -61,6 +61,7 @@ func Register(
 		ClientId:     "",
 		ClientSecret: "",
 	})
+	// Important! Use one registration option only above, only first used method works 
 	
 	var oneHandler = oid.GetController()
 	var oneSrv = oid.GetService()
