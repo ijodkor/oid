@@ -10,6 +10,8 @@
 
 Muhit o&#8216;zgaruvchilari o&#8216;rnatilinadi (Set environment variables)
 
+Agar ilova .env fayldan foydalansa (If app uses dotenv)
+
 Majburiy (Mandatory) .env
 
 ```dotenv
@@ -22,6 +24,14 @@ Ixtiyoriy (Optional) .env
 
 ```dotenv
 ONE_ID_REDIRECT_URL=<redirect_url>
+```
+
+Agar ilova .yaml fayldan foydalansa (If app uses yaml)
+
+```yaml
+ONE_ID_SSO_URL:
+ONE_ID_CLIENT_ID:
+ONE_ID_CLIENT_SECRET:
 ```
 
 ## Foydalanish (Usage)
@@ -42,6 +52,16 @@ import (
 func Register(
 	api *gin.RouterGroup,
 ) {
+	// If you use .dotenv register OneId module like this once
+	oid.Register()
+
+	// If you use .yaml register OneId module like this once
+	oid.RegisterAsync(&oid.Config{
+		Url:          "",
+		ClientId:     "",
+		ClientSecret: "",
+	})
+	
 	var oneHandler = oid.GetController()
 	var oneSrv = oid.GetService()
 	var handler = CrtHandler(oneSrv)
